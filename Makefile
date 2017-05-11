@@ -20,6 +20,13 @@ ifndef HAVE_AUTOCONF
 $(error autoconf is missing)
 endif
 
+# how it could start if we want to think about a daemon service for osx
+ifeq ($(shell uname -s), Darwin)
+  flags=-j 8 MALLOC=jemalloc
+else
+  flags=-j 4
+endif
+
 eq = $(and $(findstring $(1),$(2)),$(findstring $(2),$(1)))
 
 ALL:
@@ -28,9 +35,10 @@ ALL:
 	$(if $(HAVE_REDIS), $(error redis already installed. do sudo make install), \
 	@echo installing redis)
 	if [ ! -d "/opt/sbin/" ]; then mkdir -p /opt/sbin/; fi
-	wget http://download.redis.io/releases/redis-3.0.7.tar.gz
-	tar xzf redis-3.0.7.tar.gz && rm redis-3.0.7.tar.gz && cd redis-3.0.7 && make
-	rm -rf /opt/redis && mv redis-3.0.7 /opt/redis
+	wget https://github.com/antirez/redis/archive/unstable.tar.gz
+	tar xzf unstable.tar.gz && rm unstable.tar.gz
+	cd redis-unstable && make $(flags) && make check
+	rm -rf /opt/redis && mv redis-unstable /opt/redis
 	ln -s /opt/redis/src/redis-server /usr/local/bin/redis-server
 	ln -s /opt/redis/src/redis-server /opt/sbin/redis-server
 	ln -s /opt/redis/src/redis-cli /opt/sbin/redis-cli
