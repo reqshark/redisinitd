@@ -12,7 +12,7 @@ ifeq ($(shell uname -s), Darwin)
   flags=-j 8 MALLOC=jemalloc
 else
   flags=-j 4
-	HAVE_TCL := $(shell dpkg -l tcl | grep tcl)
+  HAVE_TCL := $(shell dpkg -l tcl | grep tcl)
 ifndef HAVE_TCL
 $(error tcl is missing)
 endif
