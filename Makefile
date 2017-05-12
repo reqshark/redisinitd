@@ -7,6 +7,17 @@ HAVE_AUTOMAKE := $(shell which automake)
 HAVE_AUTOCONF := $(shell which autoconf)
 HAVE_REDIS := $(shell which redis-server)
 
+# how it could start if we want to think about a daemon service for osx
+ifeq ($(shell uname -s), Darwin)
+  flags=-j 8 MALLOC=jemalloc
+else
+  flags=-j 4
+	HAVE_TCL := $(shell dpkg -l tcl | grep tcl)
+ifndef HAVE_TCL
+$(error tcl is missing)
+endif
+endif
+
 ifndef HAVE_WGET
 $(error wget is missing)
 endif
@@ -18,13 +29,6 @@ $(error automake is missing)
 endif
 ifndef HAVE_AUTOCONF
 $(error autoconf is missing)
-endif
-
-# how it could start if we want to think about a daemon service for osx
-ifeq ($(shell uname -s), Darwin)
-  flags=-j 8 MALLOC=jemalloc
-else
-  flags=-j 4
 endif
 
 eq = $(and $(findstring $(1),$(2)),$(findstring $(2),$(1)))
