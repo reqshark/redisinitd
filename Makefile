@@ -39,10 +39,10 @@ ALL:
 	$(if $(HAVE_REDIS), $(error redis already installed. do sudo make install), \
 	@echo installing redis)
 	if [ ! -d "/opt/sbin/" ]; then mkdir -p /opt/sbin/; fi
-	wget https://github.com/antirez/redis/archive/4.0-rc3.tar.gz
-	tar xzf 4.0-rc3.tar.gz && rm 4.0-rc3.tar.gz
-	cd redis-4.0-rc3 && make $(flags) && make check
-	rm -rf /opt/redis && mv redis-4.0-rc3 /opt/redis
+	wget http://download.redis.io/releases/redis-4.0.8.tar.gz
+	tar xzf redis-4.0.8.tar.gz && rm redis-4.0.8.tar.gz
+	cd redis-4.0.8 && make $(flags) && make check
+	rm -rf /opt/redis && mv redis-4.0.8 /opt/redis
 	ln -s /opt/redis/src/redis-server /usr/local/bin/redis-server
 	ln -s /opt/redis/src/redis-server /opt/sbin/redis-server
 	ln -s /opt/redis/src/redis-cli /opt/sbin/redis-cli
