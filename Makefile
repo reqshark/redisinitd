@@ -54,7 +54,7 @@ ALL:
 	ln -s /opt/redis/src/redis-cli /usr/local/bin/redis-cli
 	git clone https://github.com/RedisLabsModules/redis-timeseries.git ts
 	cd ts && git submodule init && git submodule update && cd src && make all $(flags)
-	mv ts/src/redis-tsdb-module.so /opt/redis/redis-tsdb-module.so && rm -rf ts
+	mv ts/src/redistimeseries.so /opt/redis/redistimeseries.so && rm -rf ts
 
 install:
 	$(if $(call eq, $(shell whoami), root), @echo installing, \
